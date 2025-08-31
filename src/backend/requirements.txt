@@ -1,0 +1,17 @@
+asgiref==3.8.1
+Django==5.1.2
+sqlparse==0.5.1
+typing_extensions==4.12.2
+psycopg2-binary
+djangorestframework
+djangorestframework-simplejwt
+django-allauth==0.52.0
+dj-rest-auth[with_social]==4.0.0
+django-anymail[mailgun]
+django-cors-headers
+requests
+Pillow
+django-trench
+python-dotenv
+channels[daphne]
+channels_redis

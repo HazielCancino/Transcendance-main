@@ -1,0 +1,63 @@
+services:
+  db:
+    image: postgres
+    container_name: postgres
+    volumes:
+      - ./.data/postgres:/var/lib/postgresql/data
+    env_file:
+      - .env
+    ports: 
+      - "5432:5432"
+    networks:
+      - trans_network
+
+  backend:
+    build: ./src/backend
+    container_name: backend
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src/backend:/app
+    depends_on:
+      - db
+      - redis 
+    networks:
+      - trans_network
+    
+
+  frontend:
+    container_name: frontend
+    build: ./src/frontend
+    ports:
+      - "3001:80"
+    networks:
+      - trans_network
+    volumes:
+      - ./src/frontend:/app
+
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6378:6379"
+    networks:
+      - trans_network
+
+  nginx:
+    container_name: nginx
+    build: ./src/nginx
+    ports:
+      - "3000:443"
+    networks:
+      - trans_network
+    volumes:
+    - ./src/backend/home_api/media:/var/www/media
+    depends_on:
+      - frontend
+      - backend
+
+networks:
+  trans_network:
+    driver: bridge
